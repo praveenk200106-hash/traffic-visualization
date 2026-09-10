@@ -102,6 +102,8 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
   const [split,      setSplit]      = useState(0.5);
   const [showLegend, setShowLegend] = useState(false);
   const [statusMsg,  setStatusMsg]  = useState<string | null>(null);
+  const isMobile = useIsMobile();
+
 
   // ── Refs ──────────────────────────────────────────────────────────────
   const mapRef       = useRef<L.Map | null>(null);
