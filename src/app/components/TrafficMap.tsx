@@ -104,6 +104,19 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
   const [statusMsg,  setStatusMsg]  = useState<string | null>(null);
   const isMobile = useIsMobile();
 
+  // ── Paired selection: left[i] ↔ right[i] ─────────────────────────────
+  const selectLeft = useCallback((id: string) => {
+    setLeftId(id);
+    const idx = left_dates.findIndex(d => d.id === id);
+    if (idx !== -1 && right_dates[idx]) setRightId(right_dates[idx].id);
+  }, [left_dates, right_dates]);
+
+  const selectRight = useCallback((id: string) => {
+    setRightId(id);
+    const idx = right_dates.findIndex(d => d.id === id);
+    if (idx !== -1 && left_dates[idx]) setLeftId(left_dates[idx].id);
+  }, [left_dates, right_dates]);
+
 
   // ── Refs ──────────────────────────────────────────────────────────────
   const mapRef       = useRef<L.Map | null>(null);
@@ -337,7 +350,7 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
               side="left"
               options={left_dates}
               value={leftId}
-              onChange={setLeftId}
+              onChange={selectLeft}
               ariaLabel="Left date"
             />
           ) : (
@@ -345,7 +358,7 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
               id="leftDateSelect"
               className="date-select date-select--left"
               value={leftId}
-              onChange={e => setLeftId(e.target.value)}
+              onChange={e => selectLeft(e.target.value)}
               aria-label="Left date"
             >
               {left_dates.map(d => <option key={d.id} value={d.id}>{d.label}</option>)}
@@ -360,7 +373,7 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
               side="right"
               options={right_dates}
               value={rightId}
-              onChange={setRightId}
+              onChange={selectRight}
               ariaLabel="Right date (fair)"
             />
           ) : (
@@ -368,7 +381,7 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
               id="rightDateSelect"
               className="date-select date-select--right"
               value={rightId}
-              onChange={e => setRightId(e.target.value)}
+              onChange={e => selectRight(e.target.value)}
               aria-label="Right date (fair)"
             >
               {right_dates.map(d => <option key={d.id} value={d.id}>{d.label}</option>)}
