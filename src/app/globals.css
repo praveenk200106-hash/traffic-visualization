@@ -1,0 +1,467 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+
+:root {
+  color-scheme: light;
+  --navy: #163047;
+  --navy-alpha: #163047aa;
+  --font-sans: 'Outfit', 'Avenir Next', Avenir, 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #fff;
+  font-family: var(--font-sans);
+}
+
+/* ── Map frame ─────────────────────────────────────────────── */
+.map-frame {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #bac9cd;
+}
+
+#map {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #c5d1d7;
+}
+
+#roads {
+  position: absolute;
+  inset: 0;
+  z-index: 450;
+  pointer-events: none;
+}
+
+.leaflet-tile-pane {
+  filter: brightness(0.85) saturate(0.85);
+}
+
+.leaflet-control-attribution {
+  font-size: 10px !important;
+  opacity: 0.8;
+  max-width: calc(100vw - 20px);
+}
+
+/* ── Divider ─────────────────────────────────────────────────── */
+.divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: #fff;
+  z-index: 600;
+  pointer-events: none;
+  box-shadow: 0 0 5px var(--navy-alpha);
+}
+
+/* ── Drag handle ─────────────────────────────────────────────── */
+.handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 46px;
+  height: 56px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  background: var(--navy);
+  color: #fff;
+  box-shadow: 0 3px 16px #0005;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  pointer-events: auto;
+  cursor: ew-resize;
+  touch-action: none;
+  user-select: none;
+  z-index: 610;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.handle:hover {
+  background: #1e4060;
+  transform: translate(-50%, -50%) scale(1.06);
+}
+
+.handle:focus-visible {
+  outline: 3px solid #ffb900;
+  outline-offset: 3px;
+}
+
+/* ── Label tags ──────────────────────────────────────────────── */
+.tag {
+  position: absolute;
+  top: max(14px, env(safe-area-inset-top));
+  z-index: 600;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--navy);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px #0003;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  letter-spacing: 0.02em;
+}
+
+.tag.left {
+  left: 14px;
+}
+
+.tag.right {
+  right: 14px;
+}
+
+/* ── Status bar ──────────────────────────────────────────────── */
+.status {
+  position: absolute;
+  left: 14px;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  z-index: 610;
+  font-size: 0.72rem;
+  background: rgba(255, 255, 255, 0.95);
+  color: #a51e17;
+  padding: 7px 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px #0003;
+  max-width: 75%;
+}
+
+/* ── Info / legend button ────────────────────────────────────── */
+.info-btn {
+  position: absolute;
+  right: 14px;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  z-index: 620;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 2px 8px #0003;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: italic 700 1.2rem Georgia, serif;
+  color: var(--navy);
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background 0.2s, color 0.2s;
+}
+
+.info-btn[aria-pressed='true'],
+.info-btn.active {
+  background: var(--navy);
+  color: #fff;
+}
+
+/* ── Legend panel ────────────────────────────────────────────── */
+.legend {
+  position: absolute;
+  right: 14px;
+  bottom: calc(max(14px, env(safe-area-inset-bottom)) + 52px);
+  z-index: 620;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--navy);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 4px 24px #0004;
+  font-size: 0.78rem;
+  min-width: 220px;
+  backdrop-filter: blur(10px);
+  animation: legendIn 0.18s ease;
+}
+
+@keyframes legendIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 0;
+}
+
+.legend-note {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(22, 48, 71, 0.13);
+  font-size: 0.69rem;
+  color: rgba(22, 48, 71, 0.6);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.legend-swatch {
+  width: 22px;
+  height: 5px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.legend-swatch.closure {
+  height: 7px;
+  background: repeating-linear-gradient(
+    to right,
+    #7f1d1d 0 6px,
+    transparent 6px 9px
+  ) !important;
+}
+
+/* ── Tooltip (church label) ──────────────────────────────────── */
+.leaflet-tooltip {
+  box-shadow: 0 2px 8px #0004;
+  border: 0;
+  padding: 0;
+}
+
+.leaflet-tooltip-top::before,
+.leaflet-tooltip-bottom::before,
+.leaflet-tooltip-left::before,
+.leaflet-tooltip-right::before {
+  display: none;
+}
+
+.church-tag {
+  font: 700 0.72rem var(--font-sans);
+  white-space: nowrap;
+  border-radius: 6px;
+  padding: 4px 8px;
+  background: var(--navy);
+  color: #fff;
+  border: 1px solid #0a1a29;
+}
+
+/* ── Top bar — two date pickers + "vs" chip ──────────────────────── */
+.top-bar {
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 620;
+}
+
+.picker-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 28px;
+  padding: 6px 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(12px);
+  max-width: calc(100vw - 28px);
+}
+
+/* Individual date selects */
+.date-select {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--navy);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  appearance: auto;
+  max-width: 140px;
+  padding: 2px 4px;
+}
+
+.date-select:focus {
+  outline: 2px solid rgba(22, 48, 71, 0.3);
+  border-radius: 6px;
+}
+
+/* Left select subtle green accent */
+.date-select--left {
+  color: #166534;
+}
+
+/* Right select subtle red accent */
+.date-select--right {
+  color: #991b1b;
+}
+
+/* "vs" chip between the two selects */
+.vs-chip {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: rgba(22, 48, 71, 0.45);
+  text-transform: uppercase;
+  padding: 0 2px;
+  user-select: none;
+}
+
+/* ── Custom pop-up dropdown (mobile) ─────────────────────────── */
+.custom-select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.custom-select-btn {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px 20px 4px 4px;
+  border-radius: 6px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.custom-select-btn::after {
+  content: '';
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%) rotate(0deg);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  transition: transform 0.2s ease;
+  opacity: 0.6;
+}
+
+.custom-select-btn[aria-expanded='true']::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.custom-select-btn--left  { color: #166534; }
+.custom-select-btn--right { color: #991b1b; }
+
+.custom-select-btn:focus-visible {
+  outline: 2px solid rgba(22, 48, 71, 0.35);
+  outline-offset: 2px;
+}
+
+/* The pop-up list — opens UPWARD */
+.custom-select-list {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 170px;
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+  backdrop-filter: blur(16px);
+  padding: 6px;
+  z-index: 700;
+  animation: listIn 0.18s cubic-bezier(0.34,1.56,0.64,1);
+  overflow: hidden;
+}
+
+@keyframes listIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0)    scale(1);    }
+}
+
+.custom-select-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 9px 14px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--navy);
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 0.12s;
+  white-space: nowrap;
+}
+
+.custom-select-option:hover,
+.custom-select-option:focus {
+  background: rgba(22, 48, 71, 0.08);
+  outline: none;
+}
+
+.custom-select-option[aria-selected='true'] {
+  background: rgba(22, 48, 71, 0.12);
+  color: #163047;
+}
+
+.custom-select-option--left[aria-selected='true']  { color: #166534; }
+.custom-select-option--right[aria-selected='true'] { color: #991b1b; }
+
+/* ── Mobile layout (≤ 540 px) ────────────────────────────────── */
+@media (max-width: 540px) {
+  /* Move picker bar to the bottom */
+  .top-bar {
+    top: auto;
+    bottom: max(60px, calc(env(safe-area-inset-bottom) + 60px));
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Side date labels — push them lower so they sit just above the picker */
+  .tag {
+    top: auto;
+    bottom: max(120px, calc(env(safe-area-inset-bottom) + 120px));
+  }
+
+  .tag.left  { left: 10px; }
+  .tag.right { right: 10px; }
+
+  /* Legend opens upward from info button and stays clear of picker bar */
+  .legend {
+    right: 10px;
+    bottom: calc(max(60px, env(safe-area-inset-bottom) + 60px) + 56px);
+  }
+
+  /* Info button stays at bottom-right but above the picker bar */
+  .info-btn {
+    bottom: max(60px, calc(env(safe-area-inset-bottom) + 60px));
+  }
+
+  /* Slightly larger tap targets for the picker */
+  .picker-group {
+    padding: 8px 16px;
+    gap: 6px;
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  .legend {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+

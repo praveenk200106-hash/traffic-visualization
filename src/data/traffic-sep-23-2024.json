@@ -1,0 +1,108 @@
+{
+  "id": "sep-23-2024",
+  "date": "23 Sep 2024",
+  "label": "23 Sep 2024",
+  "type": "baseline",
+  "segments": {
+    "-13560013749929": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "-13560035613029": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "-13560013425811": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "13560013749929": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "13560035613029": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "13560013425811": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "-13560013595050": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "-13560037672155": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "-13560013764920": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "13560013595050": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "13560037672155": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "13560013764920": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "-13560343459582": {
+      "status": "no_data",
+      "color": "#94a3b8"
+    },
+    "-13560343475154": {
+      "status": "no_data",
+      "color": "#94a3b8"
+    },
+    "13560343459582": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "13560343475154": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "-13560343477423": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "-13560343494836": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "13560014408481": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "13560340007679": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "-13560019606602": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "13560019606602": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "13560343500152": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "13560343468512": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "-13560343479463": {
+      "status": "stop_and_go",
+      "color": "#ef4444"
+    }
+  }
+}
