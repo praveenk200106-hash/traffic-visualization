@@ -291,41 +291,10 @@ body {
   ) !important;
 }
 
-/* ── Tooltip (church label) ──────────────────────────────────── */
-/* Custom pane (created in TrafficMap.tsx via map.createPane), appended
-   outside #map so its z-index can beat the #roads canvas (450) — Leaflet's
-   default panes live inside #map, which paints as one stacking-context
-   unit and can never rise above a higher-z-index sibling like #roads.
-   `!important` + the #frame prefix: this must always outrank leaflet.css's
-   own `.leaflet-pane { z-index: 400 }` (same 0-1-0 specificity as a bare
-   `.leaflet-churchLabel-pane` rule), and that stylesheet is a separate
-   <link> whose position relative to this one in <head> isn't guaranteed. */
-#frame .leaflet-churchLabel-pane {
-  z-index: 630 !important;
-}
-
-.leaflet-tooltip {
-  box-shadow: 0 2px 8px #0004;
-  border: 0;
-  padding: 0;
-}
-
-.leaflet-tooltip-top::before,
-.leaflet-tooltip-bottom::before,
-.leaflet-tooltip-left::before,
-.leaflet-tooltip-right::before {
-  display: none;
-}
-
-.church-tag {
-  font: 700 0.72rem var(--font-sans);
-  white-space: nowrap;
-  border-radius: 6px;
-  padding: 4px 8px;
-  background: var(--navy);
-  color: #fff;
-  border: 1px solid #0a1a29;
-}
+/* The church marker + name label are drawn directly on the #roads canvas
+   (see drawLabelPill / CHURCH_LABEL_STYLE in TrafficMap.tsx) rather than as
+   a Leaflet marker/tooltip — that keeps them correctly positioned during
+   pan/zoom and always painted on top of the road lines. No CSS needed here. */
 
 /* ── Top bar — two date pickers + "vs" chip ──────────────────────── */
 .top-bar {

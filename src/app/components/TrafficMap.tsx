@@ -23,8 +23,17 @@ function pathLength(points: { x: number; y: number }[]): number {
   return len;
 }
 
-/** Google-Maps-style rounded road-name tag, centred at (x, y) */
-function drawRoadLabelPill(ctx: CanvasRenderingContext2D, text: string, x: number, y: number) {
+interface PillStyle {
+  bg:     string;
+  border: string;
+  fg:     string;
+}
+
+const ROAD_LABEL_STYLE:   PillStyle = { bg: '#f0e4c8', border: 'rgba(90,68,32,0.25)', fg: '#4a3418' };
+const CHURCH_LABEL_STYLE: PillStyle = { bg: '#163047', border: '#0a1a29',             fg: '#fff'    };
+
+/** Google-Maps-style rounded name tag, centred at (x, y) */
+function drawLabelPill(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, style: PillStyle) {
   ctx.font = '700 12px system-ui, -apple-system, sans-serif';
   ctx.textAlign    = 'center';
   ctx.textBaseline = 'middle';
@@ -40,18 +49,20 @@ function drawRoadLabelPill(ctx: CanvasRenderingContext2D, text: string, x: numbe
   ctx.shadowOffsetY = 1.5;
   ctx.beginPath();
   ctx.roundRect(x - w / 2, y - h / 2, w, h, h / 2);
-  ctx.fillStyle = '#f0e4c8';
+  ctx.fillStyle = style.bg;
   ctx.fill();
   ctx.restore();
 
   ctx.beginPath();
   ctx.roundRect(x - w / 2, y - h / 2, w, h, h / 2);
-  ctx.strokeStyle = 'rgba(90,68,32,0.25)';
+  ctx.strokeStyle = style.border;
   ctx.lineWidth   = 1;
   ctx.stroke();
 
-  ctx.fillStyle = '#4a3418';
+  ctx.fillStyle = style.fg;
   ctx.fillText(text, x, y + 0.5);
+
+  return h;
 }
 
 // ── Responsive hook ──────────────────────────────────────────────────────
@@ -324,9 +335,26 @@ export default function TrafficMap({ config, segments, allDatesData, sitePhotos 
     });
     byRoad.forEach((points, name) => {
       const mid = points[Math.floor(points.length / 2)];
-      drawRoadLabelPill(ctx, name, mid.x, mid.y - 14);
+      drawLabelPill(ctx, name, mid.x, mid.y - 14, ROAD_LABEL_STYLE);
     });
-  }, [segments, getEntry]);
+
+    // Church dot + name label — drawn last, unclipped, so it always paints
+    // on top of every road line regardless of which side of the divider
+    // it falls on. See the comment above the old marker code in the map-init
+    // effect for why this has to be canvas-drawn rather than a Leaflet
+    // marker/tooltip.
+    const churchPt = map.latLngToContainerPoint([church.lat, church.lon]);
+    ctx.beginPath();
+    ctx.arc(churchPt.x, churchPt.y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#163047';
+    ctx.fill();
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = '#fff';
+    ctx.stroke();
+
+    const labelH = 14 + 5 * 2; // matches drawLabelPill's own h
+    drawLabelPill(ctx, church.name, churchPt.x, churchPt.y - 8 - labelH / 2, CHURCH_LABEL_STYLE);
+  }, [segments, getEntry, church]);
 
   const schedule = useCallback(() => {
     cancelAnimationFrame(rafRef.current);
@@ -362,17 +390,6 @@ export default function TrafficMap({ config, segments, allDatesData, sitePhotos 
 
       mapRef.current = map;
 
-      // Custom pane for the church marker + label, appended as a sibling of
-      // #map/#roads (via `frameRef.current`) instead of nested inside the
-      // default Leaflet panes. Leaflet's built-in panes live *inside* #map,
-      // which is one single stacking-context unit — no z-index on a pane
-      // there can rise above the #roads canvas overlay (z-index 450), which
-      // sits as a sibling above the whole #map unit. Giving the church its
-      // own pane outside that subtree lets its z-index (see
-      // `.leaflet-churchLabel-pane` in globals.css) compete directly with
-      // #roads, so the label stays visible over nearby drawn road lines.
-      map.createPane('churchLabelPane', frameRef.current!);
-
       const tiles = L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         { maxNativeZoom: 19, maxZoom: 20, attribution: 'Esri, Vantor, Earthstar Geographics, GIS User Community' }
@@ -393,15 +410,19 @@ export default function TrafficMap({ config, segments, allDatesData, sitePhotos 
         dashArray: '2 8', fill: false, interactive: false,
       }).addTo(map);
 
-      L.circleMarker([church.lat, church.lon], {
-        radius: 4, color: '#fff', weight: 1.5, fillColor: '#163047', fillOpacity: 1, interactive: false,
-        pane: 'churchLabelPane',
-      }).addTo(map)
-        .bindTooltip(church.name, {
-          permanent: true, direction: 'top', offset: [0, -8], className: 'church-tag',
-          pane: 'churchLabelPane',
-        })
-        .openTooltip();
+      // The church dot + name label are NOT a Leaflet marker/tooltip — they're
+      // drawn on the #roads canvas instead (see render(), after the segment
+      // loop). A Leaflet marker/tooltip lives in a pane nested inside #map,
+      // which paints as one stacking-context unit below the #roads canvas
+      // (see the comment below on why #roads must stay a plain sibling), so
+      // it could never render on top of the road lines. Putting it in a
+      // *custom* pane outside that hierarchy fixed the stacking order but
+      // broke position tracking instead — Leaflet computes marker position
+      // assuming the pane is a descendant of the map's CSS-transformed pane,
+      // and a pane attached elsewhere doesn't get that transform, so the dot
+      // visibly drifted while panning. Drawing it on the canvas in container
+      // coordinates (recomputed every frame, same as the segments) sidesteps
+      // both problems: always correctly placed, always painted last = on top.
 
       // Site-visit photo points — grouped by exact coordinate (several
       // photos are often taken standing in the same spot). Clicking a dot
