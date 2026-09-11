@@ -362,6 +362,17 @@ export default function TrafficMap({ config, segments, allDatesData, sitePhotos 
 
       mapRef.current = map;
 
+      // Custom pane for the church marker + label, appended as a sibling of
+      // #map/#roads (via `frameRef.current`) instead of nested inside the
+      // default Leaflet panes. Leaflet's built-in panes live *inside* #map,
+      // which is one single stacking-context unit — no z-index on a pane
+      // there can rise above the #roads canvas overlay (z-index 450), which
+      // sits as a sibling above the whole #map unit. Giving the church its
+      // own pane outside that subtree lets its z-index (see
+      // `.leaflet-churchLabel-pane` in globals.css) compete directly with
+      // #roads, so the label stays visible over nearby drawn road lines.
+      map.createPane('churchLabelPane', frameRef.current!);
+
       const tiles = L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         { maxNativeZoom: 19, maxZoom: 20, attribution: 'Esri, Vantor, Earthstar Geographics, GIS User Community' }
@@ -384,8 +395,12 @@ export default function TrafficMap({ config, segments, allDatesData, sitePhotos 
 
       L.circleMarker([church.lat, church.lon], {
         radius: 4, color: '#fff', weight: 1.5, fillColor: '#163047', fillOpacity: 1, interactive: false,
+        pane: 'churchLabelPane',
       }).addTo(map)
-        .bindTooltip(church.name, { permanent: true, direction: 'top', offset: [0, -8], className: 'church-tag' })
+        .bindTooltip(church.name, {
+          permanent: true, direction: 'top', offset: [0, -8], className: 'church-tag',
+          pane: 'churchLabelPane',
+        })
         .openTooltip();
 
       // Site-visit photo points — grouped by exact coordinate (several
