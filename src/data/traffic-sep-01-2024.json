@@ -1,108 +1,292 @@
 {
   "id": "sep-01-2024",
   "date": "1 Sep 2024",
-  "label": "1 Sep 2024",
+  "label": "1 Sep 2024 (normal)",
   "type": "baseline",
   "segments": {
-    "-13560013749929": {
-      "status": "fast",
-      "color": "#22c55e"
-    },
-    "-13560035613029": {
-      "status": "fast",
-      "color": "#22c55e"
-    },
-    "-13560013425811": {
+    "osm-235923270-0": {
       "status": "slowdown",
       "color": "#fbbf24"
     },
-    "13560013749929": {
+    "osm-281243330-0": {
       "status": "fast",
       "color": "#22c55e"
     },
-    "13560035613029": {
-      "status": "fast",
-      "color": "#22c55e"
-    },
-    "13560013425811": {
-      "status": "fast",
-      "color": "#22c55e"
-    },
-    "-13560013595050": {
-      "status": "fast",
-      "color": "#22c55e"
-    },
-    "-13560037672155": {
-      "status": "fast",
-      "color": "#22c55e"
-    },
-    "-13560013764920": {
-      "status": "fast",
-      "color": "#22c55e"
-    },
-    "13560013595050": {
-      "status": "fast",
-      "color": "#22c55e"
-    },
-    "13560037672155": {
+    "osm-31151674-0": {
       "status": "slowdown",
       "color": "#fbbf24"
     },
-    "13560013764920": {
+    "osm-39480170-0": {
       "status": "fast",
       "color": "#22c55e"
     },
-    "-13560343459582": {
-      "status": "no_data",
-      "color": "#94a3b8"
-    },
-    "-13560343475154": {
-      "status": "no_data",
-      "color": "#94a3b8"
-    },
-    "13560343459582": {
+    "osm-31152139-0": {
       "status": "slowdown",
       "color": "#fbbf24"
     },
-    "13560343475154": {
+    "osm-438515732-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "osm-31200699-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "osm-563049592-0": {
       "status": "slowdown",
       "color": "#fbbf24"
     },
-    "-13560343477423": {
-      "status": "fast",
-      "color": "#22c55e"
-    },
-    "-13560343494836": {
+    "osm-31151924-0": {
       "status": "slowdown",
       "color": "#fbbf24"
     },
-    "13560014408481": {
+    "osm-31184544-0": {
       "status": "fast",
       "color": "#22c55e"
     },
-    "13560340007679": {
+    "osm-431737063-0": {
       "status": "fast",
       "color": "#22c55e"
     },
-    "-13560019606602": {
-      "status": "fast",
-      "color": "#22c55e"
-    },
-    "13560019606602": {
+    "osm-1188226493-0": {
       "status": "slowdown",
       "color": "#fbbf24"
     },
-    "13560343500152": {
-      "status": "slowdown",
-      "color": "#fbbf24"
-    },
-    "13560343468512": {
+    "osm-235923269-0": {
       "status": "fast",
       "color": "#22c55e"
     },
-    "-13560343479463": {
+    "osm-701071299-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "osm-1415665101-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "osm-1415665103-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "osm-31152109-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "osm-31151606-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "osm-39480556-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "osm-464383124-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "osm-215382512-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "osm-31152131-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "osm-1393213574-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "osm-1552764898-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "osm-31152932-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1235236206-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1081349388-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-22859779-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1081349387-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-1140711299-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1145063878-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1145066142-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1493792224-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-1493792222-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-741797869-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1334676843-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1484812650-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-1235213722-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-1289185528-0": {
       "status": "stop_and_go",
       "color": "#ef4444"
+    },
+    "ctx-1235236205-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1137489456-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-783730705-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-1137489457-0": {
+      "status": "stop_and_go",
+      "color": "#ef4444"
+    },
+    "ctx-552505788-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-552505789-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1053511374-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-31152564-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1293641200-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1293641193-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-1545066404-0": {
+      "status": "stop_and_go",
+      "color": "#ef4444"
+    },
+    "ctx-1132467164-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-1235213725-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-1235442610-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1238867119-0": {
+      "status": "stop_and_go",
+      "color": "#ef4444"
+    },
+    "ctx-1235236204-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-1235442621-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-1238867133-0": {
+      "status": "stop_and_go",
+      "color": "#ef4444"
+    },
+    "ctx-1090505269-0": {
+      "status": "stop_and_go",
+      "color": "#ef4444"
+    },
+    "ctx-48803919-0": {
+      "status": "stop_and_go",
+      "color": "#ef4444"
+    },
+    "ctx-1545066402-0": {
+      "status": "stop_and_go",
+      "color": "#ef4444"
+    },
+    "ctx-1238867118-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-1253603273-0": {
+      "status": "stop_and_go",
+      "color": "#ef4444"
+    },
+    "ctx-1545066403-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-123266914-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-553233665-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1237797033-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1293641194-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-1293641198-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-1394149915-0": {
+      "status": "slowdown",
+      "color": "#fbbf24"
+    },
+    "ctx-1375103129-0": {
+      "status": "fast",
+      "color": "#22c55e"
+    },
+    "ctx-552055265-0": {
+      "status": "fast",
+      "color": "#22c55e"
     }
   }
 }

@@ -1,8 +1,11 @@
 'use client';
 
 import { useRef, useEffect, useState, useCallback } from 'react';
-import type { TrafficMapProps, SegmentGeo, TrafficEntry, DateOption } from '../types';
+import type { TrafficMapProps, SegmentGeo, TrafficEntry, DateOption, SitePhoto } from '../types';
 import type L from 'leaflet';
+
+const SURVEY_RADIUS_M = 300;
+const RADIUS_BLUE = '#3b82f6';
 
 interface Projected {
   geo:    SegmentGeo;
@@ -12,6 +15,43 @@ interface Projected {
 /** Clear Leaflet's container flag so React Strict Mode double-mount doesn't throw */
 function clearLeafletContainer(el: HTMLElement | null) {
   if (el) (el as HTMLElement & { _leaflet_id?: number })._leaflet_id = undefined;
+}
+
+function pathLength(points: { x: number; y: number }[]): number {
+  let len = 0;
+  for (let i = 1; i < points.length; i++) len += Math.hypot(points[i].x - points[i - 1].x, points[i].y - points[i - 1].y);
+  return len;
+}
+
+/** Google-Maps-style rounded road-name tag, centred at (x, y) */
+function drawRoadLabelPill(ctx: CanvasRenderingContext2D, text: string, x: number, y: number) {
+  ctx.font = '700 12px system-ui, -apple-system, sans-serif';
+  ctx.textAlign    = 'center';
+  ctx.textBaseline = 'middle';
+
+  const padX = 9, padY = 5;
+  const textW = ctx.measureText(text).width;
+  const w = textW + padX * 2;
+  const h = 14 + padY * 2;
+
+  ctx.save();
+  ctx.shadowColor   = 'rgba(0,0,0,0.35)';
+  ctx.shadowBlur    = 4;
+  ctx.shadowOffsetY = 1.5;
+  ctx.beginPath();
+  ctx.roundRect(x - w / 2, y - h / 2, w, h, h / 2);
+  ctx.fillStyle = '#f0e4c8';
+  ctx.fill();
+  ctx.restore();
+
+  ctx.beginPath();
+  ctx.roundRect(x - w / 2, y - h / 2, w, h, h / 2);
+  ctx.strokeStyle = 'rgba(90,68,32,0.25)';
+  ctx.lineWidth   = 1;
+  ctx.stroke();
+
+  ctx.fillStyle = '#4a3418';
+  ctx.fillText(text, x, y + 0.5);
 }
 
 // ── Responsive hook ──────────────────────────────────────────────────────
@@ -93,7 +133,7 @@ function MobilePicker({ id, side, options, value, onChange, ariaLabel }: PickerP
   );
 }
 
-export default function TrafficMap({ config, segments, allDatesData }: TrafficMapProps) {
+export default function TrafficMap({ config, segments, allDatesData, sitePhotos }: TrafficMapProps) {
   const { church, left_dates, right_dates } = config;
 
   // ── State ────────────────────────────────────────────────────────────
@@ -102,19 +142,30 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
   const [split,      setSplit]      = useState(0.5);
   const [showLegend, setShowLegend] = useState(false);
   const [statusMsg,  setStatusMsg]  = useState<string | null>(null);
+  const [zoom,       setZoom]       = useState(17);
+  const [mapReady,    setMapReady]    = useState(false);
+  const [activePhotos, setActivePhotos] = useState<SitePhoto[] | null>(null);
   const isMobile = useIsMobile();
 
-  // ── Paired selection: left[i] ↔ right[i] ─────────────────────────────
+  // Close the photo sidebar on Escape
+  useEffect(() => {
+    if (!activePhotos) return;
+    const onEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') setActivePhotos(null); };
+    document.addEventListener('keydown', onEsc);
+    return () => document.removeEventListener('keydown', onEsc);
+  }, [activePhotos]);
+
+  // ── Paired selection: each date names its counterpart explicitly ─────
   const selectLeft = useCallback((id: string) => {
     setLeftId(id);
-    const idx = left_dates.findIndex(d => d.id === id);
-    if (idx !== -1 && right_dates[idx]) setRightId(right_dates[idx].id);
+    const pair = left_dates.find(d => d.id === id)?.pairsWith;
+    if (pair && right_dates.some(d => d.id === pair)) setRightId(pair);
   }, [left_dates, right_dates]);
 
   const selectRight = useCallback((id: string) => {
     setRightId(id);
-    const idx = right_dates.findIndex(d => d.id === id);
-    if (idx !== -1 && left_dates[idx]) setLeftId(left_dates[idx].id);
+    const pair = right_dates.find(d => d.id === id)?.pairsWith;
+    if (pair && left_dates.some(d => d.id === pair)) setLeftId(pair);
   }, [left_dates, right_dates]);
 
 
@@ -143,6 +194,8 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
   );
 
   // ── Canvas render ─────────────────────────────────────────────────────
+  // Draws the real street network (from OpenStreetMap, clipped to the
+  // 300 m survey radius), colored per segment by that side's traffic status.
   const render = useCallback(() => {
     const map    = mapRef.current;
     const canvas = canvasRef.current;
@@ -159,9 +212,11 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
     canvas.style.height = size.y + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
+    // Container (viewport) coordinates, matching the canvas overlay that
+    // sits pinned over the map container rather than inside a Leaflet pane
     projRef.current = segments.map(geo => ({
       geo,
-      points: geo.coords.map(c => map.latLngToLayerPoint([c[1], c[0]])),
+      points: geo.coords.map(c => map.latLngToContainerPoint([c[1], c[0]])),
     }));
 
     const sp = splitRef.current;
@@ -176,21 +231,65 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
         : ctx.rect(size.x * sp, 0, size.x * (1 - sp), size.y);
       ctx.clip();
 
-      // Draw unknown segments first (below), then known ones on top
-      const sorted = [...projRef.current].sort((a, b) =>
-        Number(getEntry(a.geo.id, dateId).status !== 'no_data') -
-        Number(getEntry(b.geo.id, dateId).status !== 'no_data')
-      );
+      // Context roads at the bottom, then lanes with no data, then anything
+      // carrying real per-date status on top — regardless of whether OSM
+      // gave it a name (a couple of unnamed paths have hand-placed status
+      // too, see EXTRA_SEGMENTS in build_traffic_data.mjs)
+      const rank = (g: SegmentGeo) => g.context ? 0 : getEntry(g.id, dateId).status !== 'no_data' ? 2 : 1;
+      const sorted = [...projRef.current].sort((a, b) => rank(a.geo) - rank(b.geo));
+      const zoom = map.getZoom();
 
       sorted.forEach(({ geo, points }) => {
-        const { status, color } = getEntry(geo.id, dateId);
-        const unknown = status === 'no_data';
-        const zoom    = map.getZoom();
-        const width   = unknown ? 1.1 : zoom < 17 ? 3.2 : 4.5;
-
         ctx.lineCap  = 'round';
         ctx.lineJoin = 'round';
         ctx.setLineDash([]);
+
+        if (geo.context) {
+          // Real road, real distance, well outside the survey radius — its
+          // status is a probability-based estimate, not the hand-placed
+          // survey data.
+          const { color } = getEntry(geo.id, dateId);
+          ctx.beginPath();
+          points.forEach((pt, i) => i ? ctx.lineTo(pt.x, pt.y) : ctx.moveTo(pt.x, pt.y));
+          ctx.strokeStyle = '#0b1a2c';
+          ctx.globalAlpha = 0.55;
+          ctx.lineWidth   = 6.5;
+          ctx.stroke();
+
+          ctx.beginPath();
+          points.forEach((pt, i) => i ? ctx.lineTo(pt.x, pt.y) : ctx.moveTo(pt.x, pt.y));
+          ctx.strokeStyle = color;
+          ctx.globalAlpha = 1;
+          ctx.lineWidth   = 4.8;
+          ctx.stroke();
+          return;
+        }
+
+        const entry = getEntry(geo.id, dateId);
+        const hasData = entry.status !== 'no_data';
+
+        if (!hasData) {
+          // Real street, but no traffic-status data for it — shown as a
+          // plain, clearly visible neutral line rather than colour-coded.
+          ctx.beginPath();
+          points.forEach((pt, i) => i ? ctx.lineTo(pt.x, pt.y) : ctx.moveTo(pt.x, pt.y));
+          ctx.strokeStyle = '#0b1a2c';
+          ctx.globalAlpha = 0.5;
+          ctx.lineWidth   = 2.6;
+          ctx.stroke();
+
+          ctx.beginPath();
+          points.forEach((pt, i) => i ? ctx.lineTo(pt.x, pt.y) : ctx.moveTo(pt.x, pt.y));
+          ctx.strokeStyle = '#cbd5e1';
+          ctx.globalAlpha = 0.85;
+          ctx.lineWidth   = 1.6;
+          ctx.stroke();
+          return;
+        }
+
+        const { status, color } = entry;
+        const unknown = status === 'no_data';
+        const width   = unknown ? 1.1 : zoom < 17 ? 3.2 : 4.5;
 
         // Dark halo for known segments
         if (!unknown) {
@@ -214,6 +313,18 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
       });
 
       ctx.restore();
+    });
+
+    // Context-road labels — drawn once, unclipped, spanning the divider
+    const byRoad = new Map<string, { x: number; y: number }[]>();
+    projRef.current.forEach(({ geo, points }) => {
+      if (!geo.context) return;
+      const cur = byRoad.get(geo.road);
+      if (!cur || pathLength(points) > pathLength(cur)) byRoad.set(geo.road, points);
+    });
+    byRoad.forEach((points, name) => {
+      const mid = points[Math.floor(points.length / 2)];
+      drawRoadLabelPill(ctx, name, mid.x, mid.y - 14);
     });
   }, [segments, getEntry]);
 
@@ -261,22 +372,52 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
       tiles.on('tileerror', () => setStatusMsg(loaded ? 'Some satellite tiles are unavailable.' : 'Satellite tiles unavailable. Check your connection.'));
       setTimeout(() => { if (!loaded) setStatusMsg('Satellite imagery not loaded — internet required.'); }, 18000);
 
+      // 300 m survey-radius boundary — dark halo underneath, dashed blue on top
+      L.circle([church.lat, church.lon], {
+        radius: SURVEY_RADIUS_M, color: '#0b1a2c', weight: 5, opacity: 0.35,
+        fill: false, interactive: false,
+      }).addTo(map);
+      L.circle([church.lat, church.lon], {
+        radius: SURVEY_RADIUS_M, color: RADIUS_BLUE, weight: 2, opacity: 0.9,
+        dashArray: '2 8', fill: false, interactive: false,
+      }).addTo(map);
+
       L.circleMarker([church.lat, church.lon], {
         radius: 4, color: '#fff', weight: 1.5, fillColor: '#163047', fillOpacity: 1, interactive: false,
       }).addTo(map)
         .bindTooltip(church.name, { permanent: true, direction: 'top', offset: [0, -8], className: 'church-tag' })
         .openTooltip();
 
-      const canvas = canvasRef.current;
-      if (canvas) {
-        const pane = map.createPane('roadsPane');
-        pane.style.zIndex = '450';
-        pane.style.pointerEvents = 'none';
-        pane.appendChild(canvas);
-      }
+      // Site-visit photo points — grouped by exact coordinate (several
+      // photos are often taken standing in the same spot). Clicking a dot
+      // opens the left-hand photo sidebar instead of a Leaflet popup.
+      const photoGroups = new Map<string, SitePhoto[]>();
+      sitePhotos.forEach(p => {
+        const key = `${p.lat.toFixed(6)},${p.lng.toFixed(6)}`;
+        if (!photoGroups.has(key)) photoGroups.set(key, []);
+        photoGroups.get(key)!.push(p);
+      });
+      photoGroups.forEach(photos => {
+        const { lat, lng } = photos[0];
+        L.circleMarker([lat, lng], {
+          radius: 6 + Math.min(photos.length, 12) * 0.5,
+          color: '#fff', weight: 1.5, fillColor: '#14b8a6', fillOpacity: 0.88,
+        })
+          .addTo(map)
+          .on('click', () => setActivePhotos(photos));
+      });
 
-      map.on('move zoom resize', schedule);
-      schedule();
+      // The roads canvas deliberately stays a plain sibling overlay of the
+      // map container — NOT moved into a Leaflet pane. Panes are
+      // CSS-transformed while panning/zooming, which would drag the canvas
+      // along with them while its pixels still described the pre-pan view,
+      // so roads slid off the viewport-sized canvas and blanked out until
+      // something forced a full reset (this was the cause of segments
+      // vanishing on normal drag/scroll but reappearing after a refresh).
+      // Left in place + drawn in container coordinates, it always lines up.
+
+      map.on('zoomend', () => setZoom(map.getZoom()));
+      setMapReady(true);
     });
 
     return () => {
@@ -287,6 +428,21 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // `schedule` gets a new identity whenever the data it draws changes —
+  // re-bind the map listener each time so panning/zooming never redraws
+  // through a stale, frozen closure. `move` fires continuously during a
+  // drag (that's what keeps the overlay glued to the map while dragging);
+  // the *end events catch the final resting position.
+  useEffect(() => {
+    if (!mapReady) return;
+    const map = mapRef.current;
+    if (!map) return;
+    const events = 'move moveend zoom zoomend viewreset resize';
+    map.on(events, schedule);
+    schedule();
+    return () => { map.off(events, schedule); };
+  }, [mapReady, schedule]);
 
   // Re-render when selection changes
   useEffect(() => { schedule(); }, [leftId, rightId, schedule]);
@@ -318,6 +474,9 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
     (e.currentTarget as HTMLDivElement).releasePointerCapture(e.pointerId);
     mapRef.current?.dragging.enable();
   }, []);
+
+  const zoomIn  = useCallback(() => mapRef.current?.zoomIn(),  []);
+  const zoomOut = useCallback(() => mapRef.current?.zoomOut(), []);
 
   const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     let next = splitRef.current;
@@ -409,6 +568,24 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
         >‹│›</div>
       </div>
 
+      {/* Zoom controls */}
+      <div className="zoom-control" id="zoomControl">
+        <button
+          type="button"
+          className="zoom-btn zoom-btn--in"
+          aria-label="Zoom in"
+          disabled={zoom >= 20}
+          onClick={zoomIn}
+        >+</button>
+        <button
+          type="button"
+          className="zoom-btn zoom-btn--out"
+          aria-label="Zoom out"
+          disabled={zoom <= 14}
+          onClick={zoomOut}
+        >−</button>
+      </div>
+
       {/* Status */}
       {statusMsg && <div id="status" className="status" role="status">{statusMsg}</div>}
 
@@ -431,10 +608,18 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
           <div className="legend-row">
             <i className="legend-swatch" style={{ background: '#94a3b8' }} />No sensor data
           </div>
+          <div className="legend-row">
+            <i className="legend-swatch" style={{ border: '1.5px dashed #3b82f6', background: 'transparent' }} />300 m survey radius
+          </div>
+          <div className="legend-row">
+            <i className="legend-swatch" style={{ background: '#64748b', height: 5 }} />SV Road, Hill Road, KC Road (estimated)
+          </div>
           <div className="legend-note" id="legendNote">
-            <strong>{leftLabel}</strong> — normal weekend.<br />
-            <strong>{rightLabel}</strong> — Mount Mary Fair. Roads near the church get congested;
-            exit routes may actually flow faster due to police management.
+            <strong>{leftLabel}</strong> — normal day. <strong>{rightLabel}</strong> — Mount
+            Mary Fair. Roads closest to the church get congested or blocked; alternate and
+            exit routes stay lighter as police divert traffic outward. SV Road, Hill Road and
+            KC Road sit 500 m–1.7 km away, outside the survey area — their colour is a
+            likelihood-based estimate, not measured data.
           </div>
         </div>
       )}
@@ -447,6 +632,29 @@ export default function TrafficMap({ config, segments, allDatesData }: TrafficMa
         aria-label="Show colour legend"
         onClick={() => setShowLegend(v => !v)}
       >i</button>
+
+      {/* Site-visit photo sidebar — opens when a photo dot is clicked */}
+      {activePhotos && (
+        <>
+          <div className="photo-backdrop" onClick={() => setActivePhotos(null)} />
+          <div className="photo-sidebar" role="dialog" aria-label="Site-visit photos at this point">
+            <div className="photo-sidebar__header">
+              <span>{activePhotos.length} photo{activePhotos.length > 1 ? 's' : ''} at this point</span>
+              <button
+                type="button"
+                className="photo-sidebar__close"
+                aria-label="Close photos"
+                onClick={() => setActivePhotos(null)}
+              >×</button>
+            </div>
+            <div className="photo-sidebar__grid">
+              {activePhotos.map(p => (
+                <img key={p.id} src={p.src} alt={p.name} loading="lazy" />
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

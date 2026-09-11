@@ -1,6 +1,6 @@
-import { datesConfig, segmentsGeo, ALL_DATES_DATA } from '@/data';
+import { datesConfig, segmentsGeo, ALL_DATES_DATA, sitePhotosMountMary } from '@/data';
 import TrafficMap from './components/TrafficMap';
-import type { DatesConfig, SegmentGeo, DateTrafficData } from './types';
+import type { DatesConfig, SegmentGeo, DateTrafficData, SitePhoto } from './types';
 
 /**
  * Server component.
@@ -14,6 +14,7 @@ export default function Home() {
         config={datesConfig as DatesConfig}
         segments={segmentsGeo as SegmentGeo[]}
         allDatesData={ALL_DATES_DATA as Record<string, DateTrafficData>}
+        sitePhotos={sitePhotosMountMary as SitePhoto[]}
       />
     </main>
   );

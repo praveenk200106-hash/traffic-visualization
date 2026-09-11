@@ -1,0 +1,506 @@
+[
+  {
+    "id": "mount-mary-church-1",
+    "name": "IMG_3339",
+    "src": "/site-visit/mount-mary-church/001.jpg",
+    "lat": 19.047725,
+    "lng": 72.82055
+  },
+  {
+    "id": "mount-mary-church-2",
+    "name": "IMG_3340",
+    "src": "/site-visit/mount-mary-church/002.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-3",
+    "name": "IMG_3341",
+    "src": "/site-visit/mount-mary-church/003.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-4",
+    "name": "IMG_3342",
+    "src": "/site-visit/mount-mary-church/004.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-5",
+    "name": "IMG_3343",
+    "src": "/site-visit/mount-mary-church/005.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-6",
+    "name": "IMG_3344",
+    "src": "/site-visit/mount-mary-church/006.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-7",
+    "name": "IMG_3345",
+    "src": "/site-visit/mount-mary-church/007.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-8",
+    "name": "IMG_3346",
+    "src": "/site-visit/mount-mary-church/008.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-9",
+    "name": "IMG_3347",
+    "src": "/site-visit/mount-mary-church/009.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-10",
+    "name": "IMG_3348",
+    "src": "/site-visit/mount-mary-church/010.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-11",
+    "name": "IMG_3349",
+    "src": "/site-visit/mount-mary-church/011.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-12",
+    "name": "IMG_3350",
+    "src": "/site-visit/mount-mary-church/012.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-13",
+    "name": "IMG_3351",
+    "src": "/site-visit/mount-mary-church/013.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-14",
+    "name": "IMG_3352",
+    "src": "/site-visit/mount-mary-church/014.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-15",
+    "name": "IMG_3353",
+    "src": "/site-visit/mount-mary-church/015.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-16",
+    "name": "IMG_3354",
+    "src": "/site-visit/mount-mary-church/016.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-17",
+    "name": "IMG_3355",
+    "src": "/site-visit/mount-mary-church/017.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-18",
+    "name": "IMG_3356",
+    "src": "/site-visit/mount-mary-church/018.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-19",
+    "name": "IMG_3357",
+    "src": "/site-visit/mount-mary-church/019.jpg",
+    "lat": 19.04712216666667,
+    "lng": 72.82222833333333
+  },
+  {
+    "id": "mount-mary-church-20",
+    "name": "IMG_3359",
+    "src": "/site-visit/mount-mary-church/020.jpg",
+    "lat": 19.0465555,
+    "lng": 72.82232833333333
+  },
+  {
+    "id": "mount-mary-church-21",
+    "name": "IMG_3360",
+    "src": "/site-visit/mount-mary-church/021.jpg",
+    "lat": 19.0465555,
+    "lng": 72.82232833333333
+  },
+  {
+    "id": "mount-mary-church-22",
+    "name": "IMG_3361",
+    "src": "/site-visit/mount-mary-church/022.jpg",
+    "lat": 19.0465555,
+    "lng": 72.82232833333333
+  },
+  {
+    "id": "mount-mary-church-23",
+    "name": "IMG_3362",
+    "src": "/site-visit/mount-mary-church/023.jpg",
+    "lat": 19.0465555,
+    "lng": 72.82232833333333
+  },
+  {
+    "id": "mount-mary-church-24",
+    "name": "IMG_3363",
+    "src": "/site-visit/mount-mary-church/024.jpg",
+    "lat": 19.0465555,
+    "lng": 72.82232833333333
+  },
+  {
+    "id": "mount-mary-church-25",
+    "name": "IMG_3364",
+    "src": "/site-visit/mount-mary-church/025.jpg",
+    "lat": 19.0465555,
+    "lng": 72.82232833333333
+  },
+  {
+    "id": "mount-mary-church-26",
+    "name": "IMG_3365",
+    "src": "/site-visit/mount-mary-church/026.jpg",
+    "lat": 19.0465555,
+    "lng": 72.82232833333333
+  },
+  {
+    "id": "mount-mary-church-27",
+    "name": "IMG_3366",
+    "src": "/site-visit/mount-mary-church/027.jpg",
+    "lat": 19.0465555,
+    "lng": 72.82232833333333
+  },
+  {
+    "id": "mount-mary-church-28",
+    "name": "IMG_3367",
+    "src": "/site-visit/mount-mary-church/028.jpg",
+    "lat": 19.0465555,
+    "lng": 72.82232833333333
+  },
+  {
+    "id": "mount-mary-church-29",
+    "name": "IMG_3369",
+    "src": "/site-visit/mount-mary-church/029.jpg",
+    "lat": 19.04656666666667,
+    "lng": 72.82273
+  },
+  {
+    "id": "mount-mary-church-30",
+    "name": "IMG_3370",
+    "src": "/site-visit/mount-mary-church/030.jpg",
+    "lat": 19.04656666666667,
+    "lng": 72.82273
+  },
+  {
+    "id": "mount-mary-church-31",
+    "name": "IMG_3371",
+    "src": "/site-visit/mount-mary-church/031.jpg",
+    "lat": 19.04656666666667,
+    "lng": 72.82273
+  },
+  {
+    "id": "mount-mary-church-32",
+    "name": "IMG_3372",
+    "src": "/site-visit/mount-mary-church/032.jpg",
+    "lat": 19.04656666666667,
+    "lng": 72.82273
+  },
+  {
+    "id": "mount-mary-church-33",
+    "name": "IMG_3373",
+    "src": "/site-visit/mount-mary-church/033.jpg",
+    "lat": 19.04656666666667,
+    "lng": 72.82273
+  },
+  {
+    "id": "mount-mary-church-34",
+    "name": "IMG_3374",
+    "src": "/site-visit/mount-mary-church/034.jpg",
+    "lat": 19.04656666666667,
+    "lng": 72.82273
+  },
+  {
+    "id": "mount-mary-church-35",
+    "name": "IMG_3375",
+    "src": "/site-visit/mount-mary-church/035.jpg",
+    "lat": 19.04656666666667,
+    "lng": 72.82273
+  },
+  {
+    "id": "mount-mary-church-36",
+    "name": "IMG_3377",
+    "src": "/site-visit/mount-mary-church/036.jpg",
+    "lat": 19.046725,
+    "lng": 72.82293666666666
+  },
+  {
+    "id": "mount-mary-church-37",
+    "name": "IMG_3379",
+    "src": "/site-visit/mount-mary-church/037.jpg",
+    "lat": 19.04673333333333,
+    "lng": 72.82299666666667
+  },
+  {
+    "id": "mount-mary-church-38",
+    "name": "IMG_3380",
+    "src": "/site-visit/mount-mary-church/038.jpg",
+    "lat": 19.0467305,
+    "lng": 72.82299666666667
+  },
+  {
+    "id": "mount-mary-church-39",
+    "name": "IMG_3381",
+    "src": "/site-visit/mount-mary-church/039.jpg",
+    "lat": 19.0467305,
+    "lng": 72.82299666666667
+  },
+  {
+    "id": "mount-mary-church-40",
+    "name": "IMG_3382",
+    "src": "/site-visit/mount-mary-church/040.jpg",
+    "lat": 19.04666666666667,
+    "lng": 72.823875
+  },
+  {
+    "id": "mount-mary-church-41",
+    "name": "IMG_3383",
+    "src": "/site-visit/mount-mary-church/041.jpg",
+    "lat": 19.04676383333333,
+    "lng": 72.823975
+  },
+  {
+    "id": "mount-mary-church-42",
+    "name": "IMG_3384",
+    "src": "/site-visit/mount-mary-church/042.jpg",
+    "lat": 19.04676383333333,
+    "lng": 72.823975
+  },
+  {
+    "id": "mount-mary-church-43",
+    "name": "IMG_3385",
+    "src": "/site-visit/mount-mary-church/043.jpg",
+    "lat": 19.04676383333333,
+    "lng": 72.823975
+  },
+  {
+    "id": "mount-mary-church-44",
+    "name": "IMG_3387",
+    "src": "/site-visit/mount-mary-church/044.jpg",
+    "lat": 19.04745,
+    "lng": 72.82464666666667
+  },
+  {
+    "id": "mount-mary-church-45",
+    "name": "IMG_3388",
+    "src": "/site-visit/mount-mary-church/045.jpg",
+    "lat": 19.04745,
+    "lng": 72.82464666666667
+  },
+  {
+    "id": "mount-mary-church-46",
+    "name": "IMG_3389",
+    "src": "/site-visit/mount-mary-church/046.jpg",
+    "lat": 19.04745,
+    "lng": 72.82464666666667
+  },
+  {
+    "id": "mount-mary-church-47",
+    "name": "IMG_3390",
+    "src": "/site-visit/mount-mary-church/047.jpg",
+    "lat": 19.04745,
+    "lng": 72.82464666666667
+  },
+  {
+    "id": "mount-mary-church-48",
+    "name": "IMG_3391",
+    "src": "/site-visit/mount-mary-church/048.jpg",
+    "lat": 19.04745,
+    "lng": 72.82464666666667
+  },
+  {
+    "id": "mount-mary-church-49",
+    "name": "IMG_3392",
+    "src": "/site-visit/mount-mary-church/049.jpg",
+    "lat": 19.04745,
+    "lng": 72.82464666666667
+  },
+  {
+    "id": "mount-mary-church-50",
+    "name": "IMG_3393",
+    "src": "/site-visit/mount-mary-church/050.jpg",
+    "lat": 19.04745,
+    "lng": 72.82464666666667
+  },
+  {
+    "id": "mount-mary-church-51",
+    "name": "IMG_3394",
+    "src": "/site-visit/mount-mary-church/051.jpg",
+    "lat": 19.04745,
+    "lng": 72.82464666666667
+  },
+  {
+    "id": "mount-mary-church-52",
+    "name": "IMG_3396",
+    "src": "/site-visit/mount-mary-church/052.jpg",
+    "lat": 19.04747783333333,
+    "lng": 72.82492
+  },
+  {
+    "id": "mount-mary-church-53",
+    "name": "IMG_3397",
+    "src": "/site-visit/mount-mary-church/053.jpg",
+    "lat": 19.04747783333333,
+    "lng": 72.82492
+  },
+  {
+    "id": "mount-mary-church-54",
+    "name": "IMG_3398",
+    "src": "/site-visit/mount-mary-church/054.jpg",
+    "lat": 19.04747783333333,
+    "lng": 72.82492
+  },
+  {
+    "id": "mount-mary-church-55",
+    "name": "IMG_3399",
+    "src": "/site-visit/mount-mary-church/055.jpg",
+    "lat": 19.04747783333333,
+    "lng": 72.82492
+  },
+  {
+    "id": "mount-mary-church-56",
+    "name": "IMG_3400",
+    "src": "/site-visit/mount-mary-church/056.jpg",
+    "lat": 19.04747783333333,
+    "lng": 72.82492
+  },
+  {
+    "id": "mount-mary-church-57",
+    "name": "IMG_3402",
+    "src": "/site-visit/mount-mary-church/057.jpg",
+    "lat": 19.04754716666667,
+    "lng": 72.82492833333333
+  },
+  {
+    "id": "mount-mary-church-58",
+    "name": "IMG_3404",
+    "src": "/site-visit/mount-mary-church/058.jpg",
+    "lat": 19.04758333333333,
+    "lng": 72.82505
+  },
+  {
+    "id": "mount-mary-church-59",
+    "name": "IMG_3406",
+    "src": "/site-visit/mount-mary-church/059.jpg",
+    "lat": 19.04762783333333,
+    "lng": 72.82513666666667
+  },
+  {
+    "id": "mount-mary-church-60",
+    "name": "IMG_3407",
+    "src": "/site-visit/mount-mary-church/060.jpg",
+    "lat": 19.04762783333333,
+    "lng": 72.82513666666667
+  },
+  {
+    "id": "mount-mary-church-61",
+    "name": "IMG_3409",
+    "src": "/site-visit/mount-mary-church/061.jpg",
+    "lat": 19.0476195,
+    "lng": 72.825225
+  },
+  {
+    "id": "mount-mary-church-62",
+    "name": "IMG_3410",
+    "src": "/site-visit/mount-mary-church/062.jpg",
+    "lat": 19.047825,
+    "lng": 72.82562166666666
+  },
+  {
+    "id": "mount-mary-church-63",
+    "name": "IMG_3411",
+    "src": "/site-visit/mount-mary-church/063.jpg",
+    "lat": 19.04813333333333,
+    "lng": 72.82591166666667
+  },
+  {
+    "id": "mount-mary-church-64",
+    "name": "IMG_3413",
+    "src": "/site-visit/mount-mary-church/064.jpg",
+    "lat": 19.0484305,
+    "lng": 72.82595
+  },
+  {
+    "id": "mount-mary-church-65",
+    "name": "IMG_3415",
+    "src": "/site-visit/mount-mary-church/065.jpg",
+    "lat": 19.04871666666667,
+    "lng": 72.82595833333333
+  },
+  {
+    "id": "mount-mary-church-66",
+    "name": "IMG_3416",
+    "src": "/site-visit/mount-mary-church/066.jpg",
+    "lat": 19.04876383333333,
+    "lng": 72.82596666666667
+  },
+  {
+    "id": "mount-mary-church-67",
+    "name": "IMG_3418",
+    "src": "/site-visit/mount-mary-church/067.jpg",
+    "lat": 19.05030283333333,
+    "lng": 72.82659166666667
+  },
+  {
+    "id": "mount-mary-church-68",
+    "name": "IMG_3420",
+    "src": "/site-visit/mount-mary-church/068.jpg",
+    "lat": 19.05043333333333,
+    "lng": 72.82653
+  },
+  {
+    "id": "mount-mary-church-69",
+    "name": "IMG_3421",
+    "src": "/site-visit/mount-mary-church/069.jpg",
+    "lat": 19.05043333333333,
+    "lng": 72.82652166666666
+  },
+  {
+    "id": "mount-mary-church-70",
+    "name": "IMG_3422",
+    "src": "/site-visit/mount-mary-church/070.jpg",
+    "lat": 19.05043333333333,
+    "lng": 72.82652166666666
+  },
+  {
+    "id": "mount-mary-church-71",
+    "name": "IMG_3423",
+    "src": "/site-visit/mount-mary-church/071.jpg",
+    "lat": 19.0504305,
+    "lng": 72.82652166666666
+  },
+  {
+    "id": "mount-mary-church-72",
+    "name": "IMG_3424",
+    "src": "/site-visit/mount-mary-church/072.jpg",
+    "lat": 19.08107216666667,
+    "lng": 72.83432833333333
+  }
+]
